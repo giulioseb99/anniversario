@@ -83,7 +83,9 @@ if (carousel) {
   });
 
   let startX = 0;
-  let dragging = false;
+let lastX = 0;
+let dragging = false;
+
 
   function rotateCarousel(delta) {
     currentAngle += delta;
@@ -91,9 +93,6 @@ if (carousel) {
   }
 
   // MOUSE (solo mentre premi)
- let startX = 0;
-let lastX = 0;
-let dragging = false;
 
 carousel.addEventListener("mousedown", (e) => {
   dragging = true;
