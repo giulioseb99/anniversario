@@ -92,24 +92,23 @@ if (carousel) {
 
   // MOUSE (solo mentre premi)
   carousel.addEventListener("mousedown", (e) => {
-    dragging = true;
-    startX = e.clientX;
-    carousel.style.cursor = "grabbing";
-  });
+  dragging = true;
+  startX = e.clientX;
+  carousel.style.cursor = "grabbing";
+});
 
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-    carousel.style.cursor = "grab";
-  });
+document.addEventListener("mouseup", () => {
+  dragging = false;
+  carousel.style.cursor = "grab";
+});
 
-  carousel.addEventListener("mousemove", (e) => {
+carousel.addEventListener("mousemove", (e) => {
   if (!dragging) return;
 
   const delta = (e.clientX - startX) * 0.3;
-  startX = e.clientX;
 
   rotateCarousel(delta);
-  });
+});
 
   // TOUCH
   carousel.addEventListener("touchstart", (e) => {
