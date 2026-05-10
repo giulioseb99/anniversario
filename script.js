@@ -102,13 +102,13 @@ if (carousel) {
     carousel.style.cursor = "grab";
   });
 
-  document.addEventListener("mousemove", (e) => {
-    if (!dragging) return;
+  carousel.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
 
-    const delta = (e.clientX - startX) * 0.3;
-    startX = e.clientX;
+  const delta = (e.clientX - startX) * 0.3;
+  startX = e.clientX;
 
-    rotateCarousel(delta);
+  rotateCarousel(delta);
   });
 
   // TOUCH
