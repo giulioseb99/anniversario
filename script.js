@@ -1,75 +1,87 @@
 const music = document.getElementById("bg-music");
 
-/* 🔐 CONTROLLO PIN */
+/* 📸 IMMAGINI */
+const images = [
+  "assets/images/1.jpg",
+  "assets/images/2.jpg",
+  "assets/images/3.jpg",
+  "assets/images/4.jpg",
+  "assets/images/5.jpg",
+  "assets/images/6.jpg",
+  "assets/images/7.jpg",
+  "assets/images/8.jpg",
+  "assets/images/9.jpg",
+  "assets/images/10.jpg",
+  "assets/images/11.jpg"
+];
+
+let currentImg = 0;
+
+/* 🔐 PIN */
 function checkPin() {
   const pin = document.getElementById("pin").value;
 
   if (pin === "2405") {
-
-    // nasconde lock screen
     document.getElementById("lock-screen").style.display = "none";
-
-    // mostra contenuto
     document.getElementById("content").style.display = "block";
-
     document.body.style.overflow = "auto";
-
-    // 🎵 avvia musica
     startMusic();
-
   } else {
     document.getElementById("error").innerText = "Codice errato ❤️";
   }
 }
 
-/* 🎵 AUDIO SYSTEM - VERSIONE CORRETTA */
+/* 🎵 AUDIO */
 function startMusic() {
   if (!music) return;
 
   music.loop = true;
   music.volume = 0.6;
-
-  // Assicura che il file sia caricato
   music.load();
-  
-  // Reset per sicurezza
   music.pause();
   music.currentTime = 0;
 
-  // Prova a riprodurre
   setTimeout(() => {
-    const playPromise = music.play();
-
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log("🎵 musica partita");
-        })
-        .catch((error) => {
-          console.log("Errore riproduzione:", error);
-          
-          // Fallback: attendi click utente
-          const unlock = () => {
-            music.play().catch(() => {});
-            document.removeEventListener("click", unlock);
-          };
-          
-          document.addEventListener("click", unlock);
-        });
-    }
+    music.play().catch(() => {
+      document.addEventListener("click", () => {
+        music.play().catch(() => {});
+      }, { once: true });
+    });
   }, 500);
 }
 
-/* 👁️ SCROLL CINEMATICO */
+/* 📸 GALLERY */
+const imgEl = document.getElementById("gallery-img");
+
+function showNextImage() {
+  if (!imgEl) return;
+
+  if (currentImg < images.length) {
+    imgEl.src = images[currentImg];
+    currentImg++;
+  }
+}
+
+const imageObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      showNextImage();
+    }
+  });
+}, { threshold: 0.6 });
+
+document.querySelectorAll(".image-scene").forEach(el => {
+  imageObserver.observe(el);
+});
+
+/* 🎬 SCROLL ANIMATIONS */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add("show");
     }
   });
-}, {
-  threshold: 0.3
-});
+}, { threshold: 0.3 });
 
 document.querySelectorAll(".scene").forEach(el => {
   observer.observe(el);
