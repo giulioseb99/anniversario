@@ -50,30 +50,6 @@ function startMusic() {
   }, 500);
 }
 
-/* 📸 GALLERY */
-const imgEl = document.getElementById("gallery-img");
-
-function showNextImage() {
-  if (!imgEl) return;
-
-  if (currentImg < images.length) {
-    imgEl.src = images[currentImg];
-    currentImg++;
-  }
-}
-
-const imageObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      showNextImage();
-    }
-  });
-}, { threshold: 0.6 });
-
-document.querySelectorAll(".image-scene").forEach(el => {
-  imageObserver.observe(el);
-});
-
 /* 🎬 SCROLL ANIMATIONS */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -84,6 +60,12 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 document.querySelectorAll(".scene").forEach(el => {
+  observer.observe(el);
+});
+
+/* ========================= */
+/* 🎠 CAROSELLO 3D (FIXED)  */
+/* ========================= */
 
 const carousel = document.getElementById("carousel");
 
@@ -94,6 +76,7 @@ if (carousel) {
   const angle = 360 / items.length;
   let currentAngle = 0;
 
+  // disposizione circolare 3D
   items.forEach((img, i) => {
     img.style.transform = `rotateY(${i * angle}deg) translateZ(400px)`;
   });
@@ -106,27 +89,37 @@ if (carousel) {
     carousel.style.transform = `rotateY(${currentAngle}deg)`;
   }
 
+  // mouse drag (solo quando premi)
   carousel.addEventListener("mousedown", (e) => {
     dragging = true;
     startX = e.clientX;
+    carousel.style.cursor = "grabbing";
   });
 
-  document.addEventListener("mouseup", () => dragging = false);
+  document.addEventListener("mouseup", () => {
+    dragging = false;
+    carousel.style.cursor = "grab";
+  });
 
   document.addEventListener("mousemove", (e) => {
     if (!dragging) return;
+
     const delta = (e.clientX - startX) * 0.3;
-    rotateCarousel(delta);
     startX = e.clientX;
+
+    rotateCarousel(delta);
   });
 
+  // touch mobile
   carousel.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
   });
 
   carousel.addEventListener("touchmove", (e) => {
     const delta = (e.touches[0].clientX - startX) * 0.3;
-    rotateCarousel(delta);
     startX = e.touches[0].clientX;
+
+    rotateCarousel(delta);
   });
+
 }
