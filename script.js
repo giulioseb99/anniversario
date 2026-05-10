@@ -113,7 +113,7 @@ carousel.addEventListener("mousemove", (e) => {
   const delta = e.clientX - lastX;
   lastX = e.clientX;
 
-  rotateCarousel(delta * 0.3);
+  rotateCarousel(delta * 0.12);
 });
 
   // TOUCH
