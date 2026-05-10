@@ -1,0 +1,108 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* 🔐 LOCK */
+#lock-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #1a1a1a, black);
+}
+
+.box {
+  text-align: center;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.03);
+}
+
+input {
+  padding: 12px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 140px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: white;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#error {
+  margin-top: 10px;
+  color: #ff4d4d;
+}
+
+/* 🎬 CONTENT */
+#content {
+  display: none;
+}
+
+/* 🎞️ SCENE */
+.scene {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  transform: scale(1.05);
+  filter: blur(10px);
+
+  transition: all 1.4s ease;
+}
+
+.scene.show {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.hero {
+  flex-direction: column;
+}
+
+.hero h1 {
+  font-size: 42px;
+}
+
+.media {
+  font-size: 22px;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+}
+
+/* 📱 MOBILE */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .media {
+    font-size: 18px;
+  }
+}

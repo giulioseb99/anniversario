@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anniversario ❤️</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- 🎵 AUDIO -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="assets/music/consequence.m4a" type="audio/mp4">
+  </audio>
+
+  <!-- 🔐 LOCK SCREEN -->
+  <div id="lock-screen">
+    <div class="box">
+      <h1>❤️ Il nostro sito</h1>
+      <p>Inserisci il codice segreto</p>
+
+      <input type="password" id="pin" maxlength="4" placeholder="••••">
+      <button onclick="checkPin()">Entra</button>
+
+      <p id="error"></p>
+    </div>
+  </div>
+
+  <!-- 🎬 CONTENUTO -->
+  <div id="content">
+
+    <section class="scene hero">
+      <h1>Noi due ❤️</h1>
+      <p>Scorri nei nostri ricordi</p>
+    </section>
+
+    <section class="scene">
+      <div class="media">📸 FOTO 1 (placeholder)</div>
+    </section>
+
+    <section class="scene">
+      <div class="media">🎥 VIDEO 1 (placeholder)</div>
+    </section>
+
+    <section class="scene">
+      <div class="media">📍 MOMENTO 1 (placeholder)</div>
+    </section>
+
+    <section class="scene">
+      <div class="media">💌 MESSAGGIO FINALE</div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
