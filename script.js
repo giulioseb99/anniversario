@@ -22,35 +22,42 @@ function checkPin() {
   }
 }
 
-/* 🎵 AUDIO SYSTEM (GitHub Pages safe) */
+/* 🎵 AUDIO SYSTEM - VERSIONE CORRETTA */
 function startMusic() {
   if (!music) return;
 
   music.loop = true;
   music.volume = 0.6;
 
-  // reset per sicurezza
+  // Assicura che il file sia caricato
+  music.load();
+  
+  // Reset per sicurezza
   music.pause();
   music.currentTime = 0;
 
-  const playPromise = music.play();
+  // Prova a riprodurre
+  setTimeout(() => {
+    const playPromise = music.play();
 
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        console.log("🎵 musica partita");
-      })
-      .catch(() => {
-
-        // fallback definitivo browser (iOS/Chrome policy)
-        const unlock = () => {
-          music.play();
-          document.removeEventListener("click", unlock);
-        };
-
-        document.addEventListener("click", unlock);
-      });
-  }
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log("🎵 musica partita");
+        })
+        .catch((error) => {
+          console.log("Errore riproduzione:", error);
+          
+          // Fallback: attendi click utente
+          const unlock = () => {
+            music.play().catch(() => {});
+            document.removeEventListener("click", unlock);
+          };
+          
+          document.addEventListener("click", unlock);
+        });
+    }
+  }, 500);
 }
 
 /* 👁️ SCROLL CINEMATICO */
