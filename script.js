@@ -63,8 +63,9 @@ document.querySelectorAll(".scene").forEach(el => {
   observer.observe(el);
 });
 
+
 /* ========================= */
-/* 🎠 CAROSELLO 3D (FIXED)  */
+/* 🎠 CAROSELLO 3D FIX ONLY */
 /* ========================= */
 
 const carousel = document.getElementById("carousel");
@@ -76,7 +77,7 @@ if (carousel) {
   const angle = 360 / items.length;
   let currentAngle = 0;
 
-  // disposizione circolare 3D
+  // disposizione corretta a cerchio
   items.forEach((img, i) => {
     img.style.transform = `rotateY(${i * angle}deg) translateZ(400px)`;
   });
@@ -89,7 +90,7 @@ if (carousel) {
     carousel.style.transform = `rotateY(${currentAngle}deg)`;
   }
 
-  // mouse drag (solo quando premi)
+  // MOUSE (solo mentre premi)
   carousel.addEventListener("mousedown", (e) => {
     dragging = true;
     startX = e.clientX;
@@ -110,7 +111,7 @@ if (carousel) {
     rotateCarousel(delta);
   });
 
-  // touch mobile
+  // TOUCH
   carousel.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
   });
