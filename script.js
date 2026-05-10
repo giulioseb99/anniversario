@@ -91,9 +91,14 @@ if (carousel) {
   }
 
   // MOUSE (solo mentre premi)
-  carousel.addEventListener("mousedown", (e) => {
+ let startX = 0;
+let lastX = 0;
+let dragging = false;
+
+carousel.addEventListener("mousedown", (e) => {
   dragging = true;
   startX = e.clientX;
+  lastX = e.clientX;
   carousel.style.cursor = "grabbing";
 });
 
@@ -105,9 +110,10 @@ document.addEventListener("mouseup", () => {
 carousel.addEventListener("mousemove", (e) => {
   if (!dragging) return;
 
-  const delta = (e.clientX - startX) * 0.3;
+  const delta = e.clientX - lastX;
+  lastX = e.clientX;
 
-  rotateCarousel(delta);
+  rotateCarousel(delta * 0.3);
 });
 
   // TOUCH
