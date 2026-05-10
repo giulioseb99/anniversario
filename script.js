@@ -2,17 +2,17 @@ const music = document.getElementById("bg-music");
 
 /* 📸 IMMAGINI */
 const images = [
-  "assets/images/1.jpeg",
-  "assets/images/2.jpeg",
-  "assets/images/3.jpeg",
-  "assets/images/4.jpeg",
-  "assets/images/5.jpeg",
-  "assets/images/6.jpeg",
-  "assets/images/7.jpeg",
-  "assets/images/8.jpeg",
-  "assets/images/9.jpeg",
-  "assets/images/10.jpeg",
-  "assets/images/11.jpeg"
+  "assets/images/belli.JPEG",
+  "assets/images/belli2.JPEG",
+  "assets/images/boccaspalancata.JPEG",
+  "assets/images/capodanno.JPEG",
+  "assets/images/dorme.JPEG",
+  "assets/images/help.JPEG",
+  "assets/images/laurealavi.JPEG",
+  "assets/images/letto1.JPEG",
+  "assets/images/peluche.JPEG",
+  "assets/images/sorrisi1.JPEG",
+  "assets/images/sushi.JPEG"
 ];
 
 let currentImg = 0;
