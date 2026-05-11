@@ -65,27 +65,42 @@ document.querySelectorAll(".scene").forEach(el => {
 
 
 /* ========================= */
-/* 🎠 CAROSELLO 3D - FIXED */
-/*  - smooth dragging while pointer pressed
-    - touch + mouse support via Pointer Events
-    - momentum after release for natural feel
+/* 🎠 CAROSELLO 3D - FLUIDO (Catalogo deluxe) */
+/* Migliorato:
+   - layout centrato con anteprime proporzionate (niente deformazioni)
+   - trascinamento fluido con momentum
+   - loop visivo continuo
+   - funzioni compatibili mouse/touch/pointer
 */
 /* ========================= */
 
 const carousel = document.getElementById("carousel");
 
 if (carousel) {
-  const items = carousel.querySelectorAll("img");
-  if (items.length > 0) {
-    const angle = 360 / items.length;
-    let currentAngle = 0;
+  const items = Array.from(carousel.querySelectorAll("img"));
+  const count = items.length;
+  if (count > 0) {
+    // container styles (inline to avoid requiring CSS edits)
+    carousel.style.position = 'relative';
+    carousel.style.overflow = 'visible';
+    carousel.style.touchAction = 'pan-y'; // allow vertical scroll but keep horizontal gestures for carousel
 
-    // arrange items in circle (match CSS perspective/translateZ)
-    items.forEach((img, i) => {
-      img.style.transform = `rotateY(${i * angle}deg) translateZ(400px)`;
+    // per-item base styles
+    items.forEach(img => {
+      img.style.position = 'absolute';
+      img.style.left = '50%';
+      img.style.top = '50%';
+      img.style.transformOrigin = '50% 50%';
+      img.style.willChange = 'transform, opacity';
+      img.style.transition = 'transform 0.5s cubic-bezier(.2,.8,.2,1), opacity 0.5s';
+      img.style.pointerEvents = 'none'; // allow dragging without capturing images
+      img.style.maxWidth = '260px';
+      img.style.width = 'auto';
+      img.style.height = 'auto';
     });
 
-    // pointer dragging state
+    // state
+    let position = 0; // floating center index (0..count)
     let dragging = false;
     let pointerId = null;
     let lastX = 0;
@@ -93,26 +108,84 @@ if (carousel) {
     let lastMoveTime = 0;
     let momentumFrame = null;
 
-    const sensitivity = 0.12; // tweak rotation sensitivity
-    const friction = 0.95; // momentum decay (0.9-0.99)
+    const friction = 0.92; // momentum decay (lower => faster stop)
+    const sensitivity = 1; // drag sensitivity
 
-    function applyTransform() {
-      carousel.style.transform = `rotateY(${currentAngle}deg)`;
+    // compute spacing based on item size (fallback to 300)
+    function computeSpacing() {
+      const rect = items[0].getBoundingClientRect();
+      return Math.max(240, rect.width * 0.9);
     }
 
-    function startMomentumLoop() {
+    function mod(a, m) { return ((a % m) + m) % m; }
+
+    // place items around the center using modular arithmetic so they visually loop
+    function applyPositions() {
+      const spacing = computeSpacing();
+      const centerX = carousel.clientWidth / 2;
+      const centerY = carousel.clientHeight / 2;
+
+      items.forEach((img, i) => {
+        // shortest signed distance in index space (wrap-around)
+        let raw = i - position;
+        if (raw > count / 2) raw -= count;
+        if (raw < -count / 2) raw += count;
+
+        // visual placement
+        const x = raw * spacing;
+        const absRaw = Math.abs(raw);
+
+        // scaling and depth
+        const scale = Math.max(0.55, 1 - absRaw * 0.14);
+        const z = Math.max(-300, -Math.abs(raw) * 120);
+        const rotateY = raw * 10; // slight rotation for 3D feel
+
+        // opacity fades out for far items
+        const opacity = absRaw > 3.5 ? 0 : 1 - (absRaw / 5);
+
+        // z-index so center is on top
+        const zIndex = Math.round(1000 - absRaw * 10);
+
+        img.style.zIndex = zIndex;
+        img.style.opacity = opacity;
+        img.style.transform = `translate3d(${x}px, -50%, ${z}px) scale(${scale}) rotateY(${rotateY}deg)`;
+      });
+    }
+
+    // animation loop for momentum
+    function startMomentum() {
       cancelMomentum();
-      momentumFrame = requestAnimationFrame(function step() {
-        // apply velocity
-        if (Math.abs(velocity) > 0.001) {
-          currentAngle += velocity;
-          applyTransform();
+      function step() {
+        if (Math.abs(velocity) > 0.0001) {
+          position += velocity;
+          // keep position wrapped within [0,count) to avoid numeric drift
+          position = mod(position, count);
+          applyPositions();
           velocity *= friction;
           momentumFrame = requestAnimationFrame(step);
         } else {
           cancelMomentum();
+          // snap to nearest integer for neat resting place (optional)
+          const target = Math.round(position);
+          // animate to exact center
+          const start = position;
+          const diff = (target - start);
+          if (Math.abs(diff) > 0.001) {
+            const duration = 400;
+            const t0 = performance.now();
+            function snapFrame(now) {
+              const p = Math.min(1, (now - t0) / duration);
+              // easeOutCubic
+              const ease = 1 - Math.pow(1 - p, 3);
+              position = start + diff * ease;
+              applyPositions();
+              if (p < 1) requestAnimationFrame(snapFrame);
+            }
+            requestAnimationFrame(snapFrame);
+          }
         }
-      });
+      }
+      momentumFrame = requestAnimationFrame(step);
     }
 
     function cancelMomentum() {
@@ -122,85 +195,82 @@ if (carousel) {
       }
     }
 
-    // set initial cursor
-    carousel.style.cursor = 'grab';
-
-    // pointerdown
+    // pointer handlers
     carousel.addEventListener('pointerdown', (e) => {
-      // only left button for mouse
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-
       dragging = true;
       pointerId = e.pointerId;
-      try { carousel.setPointerCapture(pointerId); } catch (err) {}
-
+      try { e.target.setPointerCapture(pointerId); } catch (err) {}
       lastX = e.clientX;
       lastMoveTime = performance.now();
       velocity = 0;
       cancelMomentum();
 
-      carousel.style.cursor = 'grabbing';
-      carousel.style.transition = 'none'; // disable CSS transition while dragging
+      // while dragging we disable smooth transitions for immediate response
+      items.forEach(img => img.style.transition = 'none');
 
-      // avoid selecting images/text while dragging
       document.body.style.userSelect = 'none';
-      e.preventDefault();
     });
 
-    // pointermove on document so it continues even when pointer leaves carousel
     document.addEventListener('pointermove', (e) => {
       if (!dragging || e.pointerId !== pointerId) return;
-
       const now = performance.now();
-      const deltaX = e.clientX - lastX;
+      const dx = e.clientX - lastX;
       const dt = Math.max(1, now - lastMoveTime);
 
-      // update angle
-      const deltaAngle = deltaX * sensitivity;
-      currentAngle += deltaAngle;
-      applyTransform();
+      const spacing = computeSpacing();
+      // change in position measured in item indices
+      const deltaIndex = - (dx / spacing) * sensitivity;
+      position += deltaIndex;
+      position = mod(position, count);
+      applyPositions();
 
-      // compute velocity in angle-per-frame units
-      velocity = deltaAngle / (dt / 16.6667); // normalized to ~60fps
+      // velocity in index units per frame (normalized to 60fps)
+      velocity = (deltaIndex) / (dt / 16.6667);
 
       lastX = e.clientX;
       lastMoveTime = now;
     });
 
-    // pointerup / cancel
     function endDrag(e) {
-      if (!dragging || (e && e.pointerId && e.pointerId !== pointerId)) return;
-
+      if (!dragging) return;
       dragging = false;
-      try { if (pointerId != null) carousel.releasePointerCapture(pointerId); } catch (err) {}
+      try { if (pointerId != null) document.releasePointerCapture(pointerId); } catch (err) {}
       pointerId = null;
-
-      // restore cursor and CSS transition for natural easing
-      carousel.style.cursor = 'grab';
-      carousel.style.transition = 'transform 1s';
 
       document.body.style.userSelect = 'auto';
 
-      // start momentum if velocity significant
-      if (Math.abs(velocity) > 0.02) {
-        startMomentumLoop();
+      // restore transitions for smooth settling
+      items.forEach(img => img.style.transition = 'transform 0.6s cubic-bezier(.2,.8,.2,1), opacity 0.4s');
+
+      // start momentum if significant
+      if (Math.abs(velocity) > 0.002) {
+        startMomentum();
       } else {
-        velocity = 0;
+        // snap to nearest
+        const target = Math.round(position);
+        position = target;
+        applyPositions();
       }
     }
 
     document.addEventListener('pointerup', endDrag);
     document.addEventListener('pointercancel', endDrag);
 
-    // Touch: prevent page scroll while touching carousel so drag feels immediate
+    // prevent page vertical scroll while actively dragging the carousel
     carousel.addEventListener('touchmove', (e) => {
       if (dragging) e.preventDefault();
     }, { passive: false });
 
-    // ensure keyboard/other interactions won't break things
-    window.addEventListener('blur', () => {
-      if (dragging) endDrag({});
-    });
+    // blur safety
+    window.addEventListener('blur', () => { if (dragging) endDrag(); });
 
+    // initial layout
+    // position center on 0 (first item) nicely
+    position = 0;
+    applyPositions();
+
+    // on resize, re-apply positions to recompute spacing
+    window.addEventListener('resize', () => applyPositions());
   }
 }
