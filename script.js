@@ -82,9 +82,12 @@ if (carousel) {
     img.style.transform = `rotateY(${i * angle}deg) translateZ(650px)`;
   });
 
-  let startX = 0;
+let startX = 0;
 let lastX = 0;
 let dragging = false;
+
+let velocity = 0;
+let momentum;
 
 
   function rotateCarousel(delta) {
