@@ -79,7 +79,7 @@ if (carousel) {
 
   // disposizione corretta a cerchio
   items.forEach((img, i) => {
-    img.style.transform = `rotateY(${i * angle}deg) translateZ(400px)`;
+    img.style.transform = `rotateY(${i * angle}deg) translateZ(650px)`;
   });
 
   let startX = 0;
@@ -106,15 +106,16 @@ document.addEventListener("mouseup", () => {
   carousel.style.cursor = "grab";
 });
 
-carousel.addEventListener("mousemove", (e) => {
+document.addEventListener("mousemove", (e) => {
   if (!dragging) return;
+
+  e.preventDefault();
 
   const delta = e.clientX - lastX;
   lastX = e.clientX;
 
-  rotateCarousel(delta * 0.12);
+  rotateCarousel(delta * 0.08);
 });
-
   // TOUCH
   carousel.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
@@ -126,5 +127,51 @@ carousel.addEventListener("mousemove", (e) => {
 
     rotateCarousel(delta);
   });
+
+  .carousel-container {
+  width: 100%;
+  height: 700px;
+  perspective: 2000px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.carousel {
+  position: relative;
+  width: 320px;
+  height: 500px;
+
+  transform-style: preserve-3d;
+  cursor: grab;
+
+  transition: transform 0.05s linear;
+}
+
+.carousel img {
+  position: absolute;
+
+  width: 320px;
+  height: 500px;
+
+  left: 0;
+  top: 0;
+
+  object-fit: cover;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.6),
+    0 0 30px rgba(201,169,97,0.15);
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  backface-visibility: hidden;
+}
 
 }
