@@ -375,5 +375,6 @@ button:active {
     filter 0.3s ease;
 
   overflow: hidden;
+  pointer-events: none;
 
 }
