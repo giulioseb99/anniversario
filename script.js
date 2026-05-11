@@ -99,30 +99,21 @@ let momentum;
 
 carousel.addEventListener("mousedown", (e) => {
   dragging = true;
-  startX = e.clientX;
   lastX = e.clientX;
+
   carousel.style.cursor = "grabbing";
+
+  document.body.style.userSelect = "none";
 });
 
-document.addEventListener("mouseup", () => {
-
+window.addEventListener("mouseup", () => {
   dragging = false;
 
   carousel.style.cursor = "grab";
 
-  cancelAnimationFrame(momentum);
+  document.body.style.userSelect = "auto";
+});
 
-  function inertia() {
-
-    velocity *= 0.95;
-
-    currentAngle += velocity;
-
-    carousel.style.transform = `rotateY(${currentAngle}deg)`;
-
-    if (Math.abs(velocity) > 0.01) {
-      momentum = requestAnimationFrame(inertia);
-    }
 
   }
 
@@ -130,20 +121,14 @@ document.addEventListener("mouseup", () => {
 
 });
 
-carousel.addEventListener("mousemove", (e) => {
-
+window.addEventListener("mousemove", (e) => {
   if (!dragging) return;
-
-  e.preventDefault();
 
   const delta = e.clientX - lastX;
 
   lastX = e.clientX;
 
-  velocity = delta * 0.035;
-
-  rotateCarousel(delta * 0.035);
-
+  rotateCarousel(delta * 0.08);
 });
   // TOUCH
   carousel.addEventListener("touchstart", (e) => {
