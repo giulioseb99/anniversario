@@ -106,15 +106,17 @@ document.addEventListener("mouseup", () => {
   carousel.style.cursor = "grab";
 });
 
-document.addEventListener("mousemove", (e) => {
+carousel.addEventListener("mousemove", (e) => {
+
   if (!dragging) return;
 
   e.preventDefault();
 
   const delta = e.clientX - lastX;
+
   lastX = e.clientX;
 
-  rotateCarousel(delta * 0.08);
+  rotateCarousel(delta * 0.03);
 });
   // TOUCH
   carousel.addEventListener("touchstart", (e) => {
