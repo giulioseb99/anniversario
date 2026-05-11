@@ -105,8 +105,29 @@ carousel.addEventListener("mousedown", (e) => {
 });
 
 document.addEventListener("mouseup", () => {
+
   dragging = false;
+
   carousel.style.cursor = "grab";
+
+  cancelAnimationFrame(momentum);
+
+  function inertia() {
+
+    velocity *= 0.95;
+
+    currentAngle += velocity;
+
+    carousel.style.transform = `rotateY(${currentAngle}deg)`;
+
+    if (Math.abs(velocity) > 0.01) {
+      momentum = requestAnimationFrame(inertia);
+    }
+
+  }
+
+  inertia();
+
 });
 
 carousel.addEventListener("mousemove", (e) => {
@@ -119,7 +140,10 @@ carousel.addEventListener("mousemove", (e) => {
 
   lastX = e.clientX;
 
-  rotateCarousel(delta * 0.03);
+  velocity = delta * 0.035;
+
+  rotateCarousel(delta * 0.035);
+
 });
   // TOUCH
   carousel.addEventListener("touchstart", (e) => {
