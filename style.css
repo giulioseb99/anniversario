@@ -554,3 +554,16 @@ button:active {
 .controls button:hover {
   transform: scale(1.1);
 }
+
+.typewriter::after {
+  content: "▍";
+  display: inline-block;
+  margin-left: 4px;
+  animation: blink 1s infinite;
+  color: #ffd6e7;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
