@@ -383,7 +383,7 @@ if (caption) captionObserver.observe(caption);
 document.getElementById("ghostBtn").addEventListener("click", () => {
   const val = document.getElementById("ghostPin").value;
 
-  if (val === "2405") {
+  if (val === "????") {
     document.getElementById("ghostError").innerText = "✓";
   } else {
     document.getElementById("ghostError").innerText = "✕";
