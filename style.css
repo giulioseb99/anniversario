@@ -458,3 +458,9 @@ button:active {
     font-size: 3.5rem;
   }
 }
+
+.final-scene {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: blur(0) !important;
+}
