@@ -340,3 +340,41 @@ const videoObserver = new IntersectionObserver((entries) => {
 });
 
 videoObserver.observe(video);
+
+function typeWriter(element, speed = 18) {
+  const originalHTML = element.innerHTML;
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = originalHTML;
+
+  const text = tempDiv.innerText;
+  element.innerHTML = "";
+
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+
+  type();
+}
+
+const caption = document.querySelector(".video-caption");
+
+let typed = false;
+
+const captionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !typed) {
+      typed = true;
+      typeWriter(caption, 15);
+    }
+  });
+}, {
+  threshold: 0.4
+});
+
+if (caption) captionObserver.observe(caption);
