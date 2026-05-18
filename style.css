@@ -567,3 +567,15 @@ button:active {
   0%, 50% { opacity: 1; }
   50.01%, 100% { opacity: 0; }
 }
+.video-caption{
+  display: block;
+  width: 100%;
+}
+
+.video-caption p{
+  white-space: normal;
+}
+
+.video-caption *{
+  white-space: normal !important;
+}
