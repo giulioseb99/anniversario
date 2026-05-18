@@ -579,3 +579,38 @@ button:active {
 .video-caption *{
   white-space: normal !important;
 }
+
+.video-caption{
+  max-width: 750px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+
+  text-align: center;
+  display: block;
+}
+
+.video-caption p{
+  display: block;
+  width: 100%;
+
+  font-size: 1.25rem;
+  line-height: 1.9;
+
+  margin-bottom: 22px;
+
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.video-intro{
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.video-final{
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffd6e7;
+  margin-top: 40px;
+}
