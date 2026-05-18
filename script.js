@@ -72,7 +72,10 @@ const observer = new IntersectionObserver((entries) => {
       entry.target.classList.add("show");
     }
   });
-}, { threshold: 0.3 });
+}, {
+  threshold: 0.05,
+  rootMargin: "0px 0px -100px 0px"
+});
 
 document.querySelectorAll(".scene").forEach(el => {
   observer.observe(el);
