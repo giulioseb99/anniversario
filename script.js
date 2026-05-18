@@ -42,7 +42,7 @@ function checkPin() {
     document.body.style.overflow = "auto";
     startMusic();
   } else {
-    document.getElementById("error").innerText = "Codice errato ❤️";
+    document.getElementById("error").innerText = "Sbagliato strunz";
   }
 }
 
