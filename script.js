@@ -1,4 +1,4 @@
-const music = document.getElementById("bg-music");
+const music = document.getElementById("bg-music") || new Audio();
 
 /* 📸 IMMAGINI */
 const images = [
