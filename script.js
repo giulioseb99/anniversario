@@ -389,4 +389,4 @@ document.getElementById("ghostBtn").addEventListener("click", () => {
     document.getElementById("ghostError").innerText = "✕";
   }
 });
-}
+
