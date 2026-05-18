@@ -407,21 +407,32 @@ document.getElementById("ghostBtn").addEventListener("click", () => {
 
   // sempre “sbagliato” perché è WIP
   startGlitch();
-  if (attempts > 3) {
-    let errorEl = document.getElementById("ghostError");
+if (attempts > 3) {
+  let errorEl = document.getElementById("ghostError");
 
-    // evita duplicazioni del messaggio
-    if (!errorEl.dataset.warned) {
-      const warn = document.createElement("div");
-      warn.innerText = "Ti stai scervellando, eh?";
-      warn.style.marginTop = "6px";
-      warn.style.opacity = "0.8";
-      warn.style.fontSize = "12px";
+  if (!errorEl.dataset.warned) {
+    const warn = document.createElement("div");
+    warn.innerText = "Ti stai scervellando, eh?";
 
-      errorEl.parentElement.appendChild(warn);
+    warn.style.marginTop = "8px";
+    warn.style.opacity = "0";
+    warn.style.transition = "opacity 0.8s ease";
+    warn.style.fontSize = "12px";
 
-      errorEl.dataset.warned = "true";
-    }
+    errorEl.parentElement.appendChild(warn);
+
+    requestAnimationFrame(() => warn.style.opacity = "0.85");
+
+    setInterval(() => {
+      const g = "01!?#@$%&";
+      warn.innerText = "Ti stai scervellando, eh?"
+        .split("")
+        .map(c => Math.random() > 0.92 ? g[Math.random() * g.length | 0] : c)
+        .join("");
+    }, 120);
+
+    errorEl.dataset.warned = "true";
   }
+}
 });
 
