@@ -380,7 +380,7 @@ const captionObserver = new IntersectionObserver((entries) => {
 if (caption) captionObserver.observe(caption);
 
 
-function checkGhostPin() {
+document.getElementById("ghostBtn").addEventListener("click", () => {
   const val = document.getElementById("ghostPin").value;
 
   if (val === "????") {
@@ -388,4 +388,5 @@ function checkGhostPin() {
   } else {
     document.getElementById("ghostError").innerText = "✕";
   }
+});
 }
