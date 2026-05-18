@@ -461,8 +461,8 @@ button:active {
 
 .video-player {
   position: relative;
-  width: min(900px, 92%);
-  height: 520px;
+  width: min(1100px, 94%);
+  height: 650px;
 
   overflow: hidden;
 
