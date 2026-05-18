@@ -389,4 +389,3 @@ function checkGhostPin() {
     document.getElementById("ghostError").innerText = "✕";
   }
 }
-});
