@@ -380,13 +380,30 @@ const captionObserver = new IntersectionObserver((entries) => {
 if (caption) captionObserver.observe(caption);
 
 
+const ghostError = document.getElementById("ghostError");
+
+function startGlitch() {
+  const nums = [1, 7, 12, 19, 51, 3, 88, 14, 27, 66];
+  let i = 0;
+
+  ghostError.classList.add("glitch");
+
+  const interval = setInterval(() => {
+    ghostError.innerText = nums[Math.floor(Math.random() * nums.length)];
+    i++;
+
+    if (i > 18) {
+      clearInterval(interval);
+      ghostError.classList.remove("glitch");
+      ghostError.innerText = "???";
+    }
+  }, 60);
+}
+
 document.getElementById("ghostBtn").addEventListener("click", () => {
   const val = document.getElementById("ghostPin").value;
 
-  if (val === "????") {
-    document.getElementById("ghostError").innerText = "✓";
-  } else {
-    document.getElementById("ghostError").innerText = "✕";
-  }
+  // sempre “sbagliato” perché è WIP
+  startGlitch();
 });
 
