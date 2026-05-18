@@ -71,9 +71,25 @@
   </div>
 </section>
 
-    <section class="scene">
-      <div class="media">🎥 VIDEO 1 (placeholder)</div>
-    </section>
+   <section class="scene">
+  <div class="media video-player" id="video1">
+
+    <video id="loveVideo" preload="metadata">
+      <source src="assets/video/montaggio.mp4" type="video/mp4">
+    </video>
+
+    <div class="video-overlay" id="videoOverlay">
+      <div class="play-button">▶</div>
+    </div>
+
+    <div class="controls">
+      <button id="playBtn">❚❚</button>
+      <input id="vol" type="range" min="0" max="1" step="0.05">
+      <button id="fsBtn">⛶</button>
+    </div>
+
+  </div>
+</section>
 
     <section class="scene">
       <div class="media">📍 MOMENTO 1 (placeholder)</div>
