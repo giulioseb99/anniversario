@@ -378,3 +378,14 @@ const captionObserver = new IntersectionObserver((entries) => {
 });
 
 if (caption) captionObserver.observe(caption);
+
+
+document.getElementById("ghostBtn").addEventListener("click", () => {
+  const val = document.getElementById("ghostPin").value;
+
+  if (val === "2405") {
+    document.getElementById("ghostError").innerText = "✓";
+  } else {
+    document.getElementById("ghostError").innerText = "✕";
+  }
+});
