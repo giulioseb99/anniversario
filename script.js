@@ -292,3 +292,45 @@ if (carousel) {
     window.addEventListener('resize', () => applyPositions());
   }
 }
+
+
+const video = document.getElementById("loveVideo");
+const overlay = document.getElementById("videoOverlay");
+const playBtn = document.getElementById("playBtn");
+const vol = document.getElementById("vol");
+const fsBtn = document.getElementById("fsBtn");
+
+// volume iniziale
+video.volume = 0.6;
+vol.value = 0.6;
+
+// play/pause toggle
+function toggleVideo() {
+  if (video.paused) {
+    video.play();
+    overlay.style.opacity = "0";
+    playBtn.innerText = "❚❚";
+  } else {
+    video.pause();
+    overlay.style.opacity = "1";
+    playBtn.innerText = "▶";
+  }
+}
+
+overlay.addEventListener("click", toggleVideo);
+playBtn.addEventListener("click", toggleVideo);
+
+// volume
+vol.addEventListener("input", (e) => {
+  video.volume = e.target.value;
+});
+
+// fullscreen
+fsBtn.addEventListener("click", () => {
+  if (video.requestFullscreen) {
+    video.requestFullscreen();
+  }
+});
+
+// click video = toggle
+video.addEventListener("click", toggleVideo);
