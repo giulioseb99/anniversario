@@ -614,3 +614,29 @@ button:active {
   color: #ffd6e7;
   margin-top: 40px;
 }
+
+
+.scene .media{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-player{
+  width: min(1100px, 94%);
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.video-caption{
+  max-width: 750px;
+  width: 100%;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.video-caption p{
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.9;
+}
