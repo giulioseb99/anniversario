@@ -381,6 +381,7 @@ if (caption) captionObserver.observe(caption);
 
 
 const ghostError = document.getElementById("ghostError");
+let attempts = 0;
 
 function startGlitch() {
   const nums = [1, 7, 12, 19, 51, 3, 88, 14, 27, 66];
@@ -401,9 +402,26 @@ function startGlitch() {
 }
 
 document.getElementById("ghostBtn").addEventListener("click", () => {
+  attempts++;
   const val = document.getElementById("ghostPin").value;
 
   // sempre “sbagliato” perché è WIP
   startGlitch();
+  if (attempts > 3) {
+    let errorEl = document.getElementById("ghostError");
+
+    // evita duplicazioni del messaggio
+    if (!errorEl.dataset.warned) {
+      const warn = document.createElement("div");
+      warn.innerText = "Ti stai scervellando, eh?";
+      warn.style.marginTop = "6px";
+      warn.style.opacity = "0.8";
+      warn.style.fontSize = "12px";
+
+      errorEl.parentElement.appendChild(warn);
+
+      errorEl.dataset.warned = "true";
+    }
+  }
 });
 
