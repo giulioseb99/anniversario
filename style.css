@@ -462,60 +462,95 @@ button:active {
 .video-player {
   position: relative;
   width: min(900px, 92%);
-  height: 500px;
-  padding: 0;
+  height: 520px;
+
   overflow: hidden;
-  border: 1px solid #c9a961;
-  background: black;
+
+  border-radius: 18px;
+  border: 1px solid rgba(201, 169, 97, 0.35);
+
+  background: #000;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    0 0 40px rgba(201,169,97,0.08);
+
+  transition: transform 0.6s ease;
 }
 
 .video-player video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: contrast(1.05) saturate(1.05);
 }
 
-/* overlay play centrale */
+/* overlay cinematic */
 .video-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background: radial-gradient(circle at center, rgba(0,0,0,0.25), rgba(0,0,0,0.7));
   cursor: pointer;
-  background: rgba(0,0,0,0.25);
-  transition: opacity 0.4s ease;
+
+  transition: opacity 0.6s ease;
 }
 
 .video-overlay .play-button {
-  font-size: 60px;
+  font-size: 64px;
   color: #c9a961;
-  text-shadow: 0 0 20px rgba(201,169,97,0.6);
+  text-shadow:
+    0 0 25px rgba(201,169,97,0.7),
+    0 0 60px rgba(201,169,97,0.3);
+
+  transform: scale(1);
+  transition: transform 0.4s ease;
 }
 
-/* controlli minimal */
+.video-overlay:hover .play-button {
+  transform: scale(1.1);
+}
+
+/* controlli minimal deluxe */
 .controls {
   position: absolute;
-  bottom: 10px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
+
   display: flex;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
-  background: rgba(0,0,0,0.4);
-  padding: 8px 12px;
-  border: 1px solid rgba(201,169,97,0.3);
-  backdrop-filter: blur(6px);
+
+  padding: 8px 14px;
+
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(201,169,97,0.25);
+  backdrop-filter: blur(10px);
+
+  border-radius: 999px;
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* appare solo su hover */
+.video-player:hover .controls {
+  opacity: 1;
 }
 
 .controls button {
   background: transparent;
   border: none;
   color: #c9a961;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.controls input[type="range"] {
-  width: 100px;
+.controls button:hover {
+  transform: scale(1.1);
 }
